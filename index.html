@@ -113,7 +113,7 @@
                 destination: destination,
                 time: time,
                 frequency: frequency,
-                TrainAdded: firebase.database.ServerValue.TIMESTAMP
+                nextTrainFormatted: firebase.database.ServerValue.TIMESTAMP
             });
             resetFourm()
         });
@@ -138,17 +138,21 @@
             var diffTime = currentTime.diff(moment(firstTimeConverted), "minutes");
 
             var tRemainder = diffTime % childSnapshot.val().frequency;
+            console.log("remainder", tRemainder)
             //remaining time until next train
             var minutesTillTrain = childSnapshot.val().frequency - tRemainder;
+            console.log("time until next train", minutesTillTrain)
             //next train after first train time has passed
             var nextTrain = moment().add(minutesTillTrain, "minutes");
+            console.log("next train", nextTrain)
             //formatting the next train to hours and mins
             var nextTrainFormatted = moment(nextTrain).format("hh:mm");
             console.log("our train format", nextTrainFormatted)
 
             $("#trainInfo").append("<tr><td>" + childSnapshot.val().trainName + "</td><td>" + childSnapshot.val()
-                .destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" + childSnapshot.val()
-                .minutesTillTrain + "</td><td>" + childSnapshot.val().nextTrainFormatted + "</td></tr>")
+                .destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" +
+                nextTrainFormatted + "</td><td>" + minutesTillTrain + "</td></tr>")
+
 
 
         })
